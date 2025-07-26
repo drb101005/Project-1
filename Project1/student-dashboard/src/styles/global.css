@@ -1,13 +1,359 @@
-body.dark-mode {
-  background-color: #1f2937;
-  color: #f9fafb;
-  transition: background-color 0.3s, color 0.3s;
-}
-
+/* ====== RESET & BASE STYLES ====== */
 body {
+  margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  color: #222;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  line-height: 1.6;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+body.dark-mode {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+
+/* ====== CONTAINER WRAPPER ====== */
+.container, .dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ====== HEADER STYLES ====== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode .app-header {
+  background-color: #1f1f1f;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.06);
+}
+
+/* ====== TOGGLE BUTTON ====== */
+.theme-toggle-btn {
+  background: linear-gradient(to right, #4a90e2, #357bd8);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  background: linear-gradient(to right, #357bd8, #2b6fb5);
+  transform: translateY(-2px);
+}
+
+/* ====== DIVIDER ====== */
+.divider {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+body.dark-mode .divider {
+  border-top: 1px solid #444;
+}
+
+/* ====== CALENDAR DAY STYLING ====== */
+.calendar-day {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.calendar-day:hover {
+  background-color: #e0f7ff;
+}
+
+body.dark-mode .calendar-day {
+  background-color: #1e1e1e;
+  color: white;
+  border-color: #555;
+}
+body.dark-mode .calendar-day:hover {
+  background-color: #2c2c2c;
+}
+
+/* ====== TODAY HIGHLIGHT ====== */
+.today-highlight {
+  background-color: aqua !important;
+  color: black;
+  font-weight: bold;
+  border: 2px solid teal;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* ====== DASHBOARD GRID ====== */
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard-grid section {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.4s, box-shadow 0.3s ease;
+}
+
+.dashboard-grid section:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-mode .dashboard-grid section {
+  background: #1a1a1a;
+  box-shadow: 0 3px 12px rgba(255, 255, 255, 0.05);
+}
+
+/* ====== RESPONSIVE STACKING ====== */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    flex-direction: column;
+  }
+
+  .dashboard-container .top-section,
+  .dashboard-container .bottom-section {
+    flex-direction: column;
+  }
+}
+
+/* ====== CARD TITLES ====== */
+.dashboard-grid section h2,
+.dashboard-grid section h3,
+.dashboard-grid section h4 {
+  margin-top: 0;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+body.dark-mode .dashboard-grid section h2,
+body.dark-mode .dashboard-grid section h3,
+body.dark-mode .dashboard-grid section h4 {
+  color: #f0f0f0;
+}
+
+/* ====== SMOOTH ANIMATION ====== */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+body.dark-mode .dashboard-grid section {
+  background-color: #1e1e1e !important;
+  color: #f5f5f5 !important;
+  box-shadow: 0 3px 12px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .dashboard-grid section * {
+  color: #f5f5f5 !important;
+}
+/* 🎯 Refined Dark Mode Colors */
+body.dark-mode {
+  background-color: #0d1117;
+  color: #c9d1d9;
+}
+
+body.dark-mode .app-header {
+  background-color: #161b22;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .dashboard-grid section {
+  background-color: #161b22 !important;
+  color: #c9d1d9 !important;
+  box-shadow: 0 3px 12px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .dashboard-grid section * {
+  color: #c9d1d9 !important;
+}
+
+/* Accent Colors */
+.today-highlight {
+  background-color: #58a6ff !important;
+  color: #0d1117 !important;
+  font-weight: bold;
+  border: 2px solid #1f6feb;
+}
+
+/* Button Theme */
+body.dark-mode .theme-toggle-btn {
+  background-color: #238636;
+  color: white;
+}
+
+body.dark-mode .theme-toggle-btn:hover {
+  background-color: #2ea043;
+}
+/* ⚡ Cyberpunk Dark Mode */
+body.dark-mode {
+  background-color: #000000;
+  color: #d946ef; /* Neon Purple */
+}
+
+/* Header */
+body.dark-mode .app-header {
+  background-color: #111111;
+  color: #d946ef;
+  box-shadow: 0 0 12px #d946ef;
+}
+
+/* Dashboard Sections */
+body.dark-mode .dashboard-grid section {
+  background-color: #111111 !important;
+  color: #d946ef !important;
+  border: 1px solid #d946ef;
+  box-shadow: 0 0 10px #d946ef55;
+}
+
+body.dark-mode .dashboard-grid section * {
+  color: #d946ef !important;
+}
+
+/* Calendar Today Highlight */
+.today-highlight {
+  background-color: #ff00ff !important;
+  color: black !important;
+  font-weight: bold;
+  border: 2px solid #d946ef;
+}
+
+/* Buttons */
+body.dark-mode .theme-toggle-btn,
+body.dark-mode button {
+  background: linear-gradient(45deg, #ff00ff, #00ffff);
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #ff00ff88;
+  transition: all 0.3s ease-in-out;
+}
+
+body.dark-mode .theme-toggle-btn:hover,
+body.dark-mode button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 16px #00ffffaa;
+}
+
+/* Input Fields */
+body.dark-mode input,
+body.dark-mode select {
+  background-color: #000000;
+  color: #ff00ff;
+  border: 1px solid #d946ef;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+body.dark-mode input::placeholder {
+  color: #ff66ff;
+}
+
+/* Calendar Borders */
+body.dark-mode .calendar-day {
+  background-color: #0a0a0a;
+  border: 1px solid #660099;
+  color: #d946ef;
+}
+
+/* Divider */
+body.dark-mode .divider {
+  border-top: 1px solid #ff00ff;
+}
+/* Calendar Day Base */
+body.dark-mode .calendar-day {
+  background-color: #0a0a0a;
+  color: #d946ef;
+  border: 1px solid #660099;
+  transition: background-color 0.2s ease-in-out, color 0.2s;
+}
+
+/* Hover Effect */
+body.dark-mode .calendar-day:hover {
+  background-color: #1a1a1a;
+  color: #ff66ff;
+  cursor: pointer;
+}
+
+/* Selected Day */
+body.dark-mode .calendar-day.selected {
+  background-color: #00ffff;
+  color: #000 !important;
+  font-weight: bold;
+  border: 2px solid #ff00ff;
+  box-shadow: 0 0 8px #00ffff88;
+}
+
+/* Today's Date */
+body.dark-mode .calendar-day.today-highlight {
+  background-color: #ff00ff !important;
+  color: #000000 !important;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 8px #ff00ff88;
+}
+/* Calendar Day Tile Base - Clean Neon Frame */
+body.dark-mode .calendar-day {
+  background: rgba(0, 0, 0, 0.9);
+  color: #f0f; /* bright purple */
+  border: 1px solid #f0f;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 4px #ff00ff44;
+}
+
+/* Hover Effect */
+body.dark-mode .calendar-day:hover {
+  background-color: #1a1a1a;
+  color: #00ffff;
+  border-color: #00ffff;
+  box-shadow: 0 0 6px #00ffff88;
+}
+
+/* Selected Day */
+body.dark-mode .calendar-day.selected {
+  background: linear-gradient(135deg, #ff00ff, #00ffff);
+  color: #000;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 10px #00ffff88;
+}
+
+/* Today's Highlight */
+body.dark-mode .calendar-day.today-highlight {
+  background: #00ffff;
+  color: #000 !important;
+  border: 2px solid #ff00ff;
+  box-shadow: 0 0 10px #00ffffaa;
+}
+body.dark-mode .react-calendar__navigation button {
+  background-color: #0a0a0a;
+  color: #ff00ff;
+  font-weight: bold;
+  border: none;
+}
+
+body.dark-mode .react-calendar__navigation button:enabled:hover {
+  background-color: #1f1f1f;
+  color: #00ffff;
+}

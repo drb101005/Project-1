@@ -1,82 +1,59 @@
-import "./AttendanceTracker.css";
-
 import { useState, useEffect } from "react";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
 function AssignmentTracker() {
-  const [title, setTitle] = useState("");
-  const [dueDate, setDueDate] = useState("");
   const [assignments, setAssignments] = useState([]);
+  const [newAssignment, setNewAssignment] = useState({ title: "", dueDate: "" });
 
-  // Load from localStorage on mount
+  // ✅ Load from Firestore on mount
   useEffect(() => {
-    const savedAssignments = JSON.parse(localStorage.getItem("assignments")) || [];
-    setAssignments(savedAssignments);
+    const fetchAssignments = async () => {
+      const querySnapshot = await getDocs(collection(db, "assignments"));
+      const data = querySnapshot.docs.map(doc => doc.data());
+      setAssignments(data);
+    };
+    fetchAssignments();
   }, []);
 
-  // Save on change
-  useEffect(() => {
-    localStorage.setItem("assignments", JSON.stringify(assignments));
-  }, [assignments]);
+  // ✅ Add to Firestore
+  const handleAdd = async () => {
+    if (!newAssignment.title || !newAssignment.dueDate) return;
 
-  const addAssignment = () => {
-    if (title.trim() && dueDate) {
-      const newAssignment = {
-        id: Date.now(),
-        title,
-        dueDate,
-      };
-      setAssignments([...assignments, newAssignment]);
-      setTitle("");
-      setDueDate("");
-    }
-  };
+    const newItem = {
+      ...newAssignment,
+      dueDate: new Date(newAssignment.dueDate).toISOString()
+    };
 
-  const deleteAssignment = (id) => {
-    setAssignments(assignments.filter((a) => a.id !== id));
+    await addDoc(collection(db, "assignments"), newItem);
+    setAssignments([...assignments, newItem]);
+    setNewAssignment({ title: "", dueDate: "" });
+
+    // Optional: trigger calendar update
+    window.dispatchEvent(new Event("storage"));
   };
 
   return (
     <div>
-      <h2>📌 Assignments To Complete</h2>
-      <div style={{ display: "flex", gap: "10px", marginBottom: "10px", flexWrap: "wrap" }}>
+      <h2>📄 Assignment Tracker</h2>
+      <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
         <input
           type="text"
           placeholder="Assignment title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={{ padding: "8px", flex: 1 }}
+          value={newAssignment.title}
+          onChange={(e) => setNewAssignment({ ...newAssignment, title: e.target.value })}
         />
         <input
           type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-          style={{ padding: "8px" }}
+          value={newAssignment.dueDate}
+          onChange={(e) => setNewAssignment({ ...newAssignment, dueDate: e.target.value })}
         />
-        <button onClick={addAssignment} style={{ padding: "8px 12px", cursor: "pointer" }}>
-          ➕ Add
-        </button>
+        <button onClick={handleAdd}>➕ Add</button>
       </div>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {assignments.map((a) => (
-          <li
-            key={a.id}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "8px",
-              background: "#e2e8f0",
-              marginBottom: "6px",
-              borderRadius: "4px",
-              alignItems: "center",
-            }}
-          >
-            <span>
-              <strong>{a.title}</strong> — Due: {a.dueDate}
-            </span>
-            <button onClick={() => deleteAssignment(a.id)} style={{ cursor: "pointer", color: "red" }}>
-              ❌
-            </button>
-          </li>
+
+      <ul>
+        {assignments.map((a, idx) => (
+          <li key={idx}>📝 {a.title} - 📅 {new Date(a.dueDate).toDateString()}</li>
         ))}
       </ul>
     </div>

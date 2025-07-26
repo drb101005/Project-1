@@ -1,0 +1,13 @@
+.event-day {
+  background: #e0f7fa !important;
+  border-radius: 50%;
+  font-weight: bold;
+  color: #00796b !important;
+}
+
+.today-highlight {
+  background-color: #00ffff !important;
+  border-radius: 50%;
+  font-weight: bold;
+  color: #000 !important;
+}

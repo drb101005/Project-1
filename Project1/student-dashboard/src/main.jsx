@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Dashboard from './components/pages/Dashboard'; // ✅ Correct path
+import App from './App'; // ✅ Mount the full app, not just dashboard
 
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Dashboard />
+    <App />
   </React.StrictMode>
 );
