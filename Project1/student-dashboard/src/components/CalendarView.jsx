@@ -1,82 +1,56 @@
-import { useState, useEffect } from "react";
+// src/components/CalendarView.jsx
+import React, { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { useEvents } from "../context/EventContext";
 import "./calendarView.css";
-import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
-
+import { format } from "date-fns";
 function CalendarView() {
+  const { events } = useEvents();
   const [value, setValue] = useState(new Date());
-  const [events, setEvents] = useState([]);
-  const [eventTitle, setEventTitle] = useState("");
 
-  const loadEvents = async () => {
-    const querySnapshot = await getDocs(collection(db, "assignments"));
-    const assignmentEvents = querySnapshot.docs.map(doc => {
-      const data = doc.data();
-      return {
-        date: new Date(data.dueDate),
-        title: "Due: " + data.title,
-        completed: false
-      };
-    });
-    setEvents(assignmentEvents);
-  };
+  const groupedEvents = {};
+  events.forEach((event) => {
+    const dateStr = event.date?.split("T")[0];
+    if (!groupedEvents[dateStr]) groupedEvents[dateStr] = [];
+    groupedEvents[dateStr].push(event.title);
+  });
 
-  useEffect(() => {
-    loadEvents();
-    window.addEventListener("storage", loadEvents);
-    return () => window.removeEventListener("storage", loadEvents);
-  }, []);
+  
+// ...
+const selectedDate = format(value, "yyyy-MM-dd");
 
-  const getEventsForDate = (date) =>
-    events.filter((event) => new Date(event.date).toDateString() === date.toDateString());
-
-  const handleAddEvent = () => {
-    if (!eventTitle.trim()) return;
-    const newEvent = { date: value, title: eventTitle, completed: false };
-    setEvents([...events, newEvent]);
-    setEventTitle("");
-  };
 
   return (
-    <div>
-      <h2>🗓️ Calendar & Events</h2>
+    <div className="calendar-container">
+      <h3 className="assignment-title">📅 Calendar & Events</h3>
+
       <Calendar
         onChange={setValue}
         value={value}
-        tileClassName={({ date, view }) => {
-          if (view === "month") {
-            const isToday = date.toDateString() === new Date().toDateString();
-            const hasEvent = events.some(
-              (event) => new Date(event.date).toDateString() === date.toDateString()
-            );
-            if (isToday) return "today-highlight";
-            if (hasEvent) return "event-day";
-          }
+        tileClassName={({ date }) => {
+          const dateStr = format(date, "yyyy-MM-dd");
+          if (groupedEvents[dateStr]?.length) return "event-day";
           return null;
         }}
+        prevLabel="«"
+        nextLabel="»"
+        prev2Label={null}
+        next2Label={null}
       />
 
-      <div style={{ marginTop: "1rem" }}>
-        <input
-          type="text"
-          placeholder="Add event for selected date"
-          value={eventTitle}
-          onChange={(e) => setEventTitle(e.target.value)}
-          style={{ padding: "8px", marginRight: "10px" }}
-        />
-        <button onClick={handleAddEvent} style={{ padding: "8px" }}>
-          ➕ Add Event
-        </button>
+      <div className="event-list">
+        Events on <strong>{selectedDate}</strong>:
+        <ul>
+          {groupedEvents[selectedDate]?.length ? (
+            groupedEvents[selectedDate].map((event, index) => (
+              <li key={index}>{event}</li>
+            ))
+          ) : (
+            <li>No events for this date.</li>
+          )}
+        </ul>
       </div>
-
-      <h4>📅 Events on {value.toDateString()}:</h4>
-      <ul>
-        {getEventsForDate(value).map((event, idx) => (
-          <li key={idx}>{event.title}</li>
-        ))}
-      </ul>
     </div>
   );
 }

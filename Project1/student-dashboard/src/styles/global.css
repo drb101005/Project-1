@@ -357,3 +357,24 @@ body.dark-mode .react-calendar__navigation button:enabled:hover {
   background-color: #1f1f1f;
   color: #00ffff;
 }
+/* Force CalendarView to stay in black-purple theme */
+.calendar-container,
+.calendar-container *,
+.react-calendar,
+.react-calendar * {
+  background-color: #0f0f0f !important;
+  color: #d36df5 !important;
+  border-color: #d36df5 !important;
+  box-shadow: none !important;
+}
+
+.calendar-container h3,
+.calendar-container h3 * {
+  color: #ffd700 !important; /* Bright Yellow for header */
+}
+
+.calendar-container .event-day {
+  background: #ffe600 !important;
+  color: #000000 !important;
+  font-weight: bold;
+}

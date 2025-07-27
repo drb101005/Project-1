@@ -1,0 +1,105 @@
+.assignment-card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  color: var(--text-color);
+  border: 1px solid var(--card-border);
+}
+
+.assignment-inputs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.assignment-inputs input[type="text"],
+.assignment-inputs input[type="date"] {
+  padding: 8px;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  flex: 1;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+.assignment-inputs button {
+  padding: 8px 12px;
+  background-color: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.assignment-inputs button:hover {
+  background-color: #574de9;
+}
+
+.assignment-list {
+  list-style: none;
+  padding: 0;
+}
+
+.assignment-item {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--item-bg);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+.assignment-item button {
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* 🎨 Color indicators */
+.past-due {
+  border-left: 6px solid #ff4d4d; /* 🟥 Red */
+}
+
+.due-today {
+  border-left: 6px solid #ff9900; /* 🟧 Orange */
+}
+
+.due-week {
+  border-left: 6px solid #ffd700; /* 🟨 Yellow */
+}
+
+.future-task {
+  border-left: 6px solid #4caf50; /* 🟩 Green */
+}
+
+/* 🌞 Light mode variables */
+:root {
+  --card-bg: #ffffff;
+  --card-border: #dddddd;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --text-color: #1f1f1f;
+  --input-bg: #ffffff;
+  --input-border: #cccccc;
+  --item-bg: #f8f8f8;
+}
+
+/* 🌑 Dark mode variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #0e0e0e;
+    --card-border: #222222;
+    --card-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+    --text-color: #eaeaff;
+    --input-bg: #1b1b1b;
+    --input-border: #444;
+    --item-bg: #181818;
+  }
+}

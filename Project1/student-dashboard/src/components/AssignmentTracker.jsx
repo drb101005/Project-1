@@ -1,59 +1,70 @@
-import { useState, useEffect } from "react";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import { useState } from "react";
+import { collection, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
+import { useEvents } from "../context/EventContext";
+import { format, isBefore, isToday, isThisWeek, parseISO } from "date-fns";
+import "./AssignmentTracker.css";
 
 function AssignmentTracker() {
-  const [assignments, setAssignments] = useState([]);
-  const [newAssignment, setNewAssignment] = useState({ title: "", dueDate: "" });
+  const { events, setEvents } = useEvents();
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
 
-  // ✅ Load from Firestore on mount
-  useEffect(() => {
-    const fetchAssignments = async () => {
-      const querySnapshot = await getDocs(collection(db, "assignments"));
-      const data = querySnapshot.docs.map(doc => doc.data());
-      setAssignments(data);
-    };
-    fetchAssignments();
-  }, []);
+  const assignments = events.filter((e) => e.source === "assignment");
 
-  // ✅ Add to Firestore
-  const handleAdd = async () => {
-    if (!newAssignment.title || !newAssignment.dueDate) return;
+  const addAssignment = async () => {
+    if (!title || !date) return;
+    const newAssignment = { title, date, source: "assignment" };
+    const docRef = await addDoc(collection(db, "calendarEvents"), newAssignment);
+    setEvents([...events, { ...newAssignment, id: docRef.id }]);
+    setTitle("");
+    setDate("");
+  };
 
-    const newItem = {
-      ...newAssignment,
-      dueDate: new Date(newAssignment.dueDate).toISOString()
-    };
+  const deleteAssignment = async (id) => {
+    await deleteDoc(doc(db, "calendarEvents", id));
+    setEvents(events.filter((e) => e.id !== id));
+  };
 
-    await addDoc(collection(db, "assignments"), newItem);
-    setAssignments([...assignments, newItem]);
-    setNewAssignment({ title: "", dueDate: "" });
-
-    // Optional: trigger calendar update
-    window.dispatchEvent(new Event("storage"));
+  const getUrgencyColor = (dateStr) => {
+    const date = parseISO(dateStr);
+    const now = new Date();
+    if (isBefore(date, now)) return "past-due";
+    if (isToday(date)) return "due-today";
+    if (isThisWeek(date)) return "due-week";
+    return "future-task";
   };
 
   return (
-    <div>
-      <h2>📄 Assignment Tracker</h2>
-      <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+    <div className="assignment-card">
+      <h3 className="assignment-title" style={{ color: "#ffe600" }}>
+        📄 Assignments to Complete
+      </h3>
+
+      <div className="assignment-inputs">
         <input
           type="text"
           placeholder="Assignment title"
-          value={newAssignment.title}
-          onChange={(e) => setNewAssignment({ ...newAssignment, title: e.target.value })}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
-        <input
-          type="date"
-          value={newAssignment.dueDate}
-          onChange={(e) => setNewAssignment({ ...newAssignment, dueDate: e.target.value })}
-        />
-        <button onClick={handleAdd}>➕ Add</button>
+        <label className="date-label">
+          <span role="img" aria-label="calendar" className="calendar-icon">📆</span>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </label>
+        <button onClick={addAssignment}>➕ Add</button>
       </div>
 
-      <ul>
-        {assignments.map((a, idx) => (
-          <li key={idx}>📝 {a.title} - 📅 {new Date(a.dueDate).toDateString()}</li>
+      <ul className="assignment-list">
+        {assignments.map((item) => (
+          <li key={item.id} className={`assignment-item ${getUrgencyColor(item.date)}`}>
+            <span>{item.title} — {format(parseISO(item.date), "MMM dd, yyyy")}</span>
+            <button onClick={() => deleteAssignment(item.id)}>❌</button>
+          </li>
         ))}
       </ul>
     </div>

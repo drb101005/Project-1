@@ -2,11 +2,14 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-Your api keys here ...
+// ✅ Your Firebase config (keep this unchanged)
+const firebaseConfig = {
+Put your keys here
+};
 
-// Initialize Firebase
+// 🔧 Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// ✅ FIX: Export the Firestore instance properly
+// ✅ Export the Firestore DB instance
 const db = getFirestore(app);
 export { db };

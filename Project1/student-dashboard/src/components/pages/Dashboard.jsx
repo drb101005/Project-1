@@ -1,5 +1,5 @@
 import AssignmentTracker from "../AssignmentTracker";
-import CalendarEvents from "../CalendarEvents";
+import TodoList from "../TodoList";
 import GradesOverview from "../GradesOverview";
 import UpcomingTests from "../UpcomingTests";
 import ProfileCard from "../ProfileCard";
@@ -7,8 +7,15 @@ import CalendarView from "../CalendarView";
 
 function Dashboard() {
   return (
-    <div className="dashboard-grid" style={{ display: "flex", flexDirection: "column", gap: "20px", paddingBottom: "40px" }}>
-
+    <div
+      className="dashboard-grid"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+        paddingBottom: "40px",
+      }}
+    >
       {/* 🔝 Row 1: Assignments + Calendar */}
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
         <section style={{ flex: 1 }}>
@@ -19,10 +26,10 @@ function Dashboard() {
         </section>
       </div>
 
-      {/* 📅 Row 2: Upcoming Calendar Events + Upcoming Tests (Swapped) */}
+      {/* 📅 Row 2: To-Do List + Upcoming Tests */}
       <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
         <section style={{ flex: 1 }}>
-          <CalendarEvents />
+          <TodoList />
         </section>
         <section style={{ flex: 1 }}>
           <UpcomingTests />
@@ -38,7 +45,6 @@ function Dashboard() {
       <section>
         <ProfileCard />
       </section>
-
     </div>
   );
 }

@@ -1,0 +1,103 @@
+/* AssignmentTracker.css */
+
+.assignment-card {
+  background-color: var(--tracker-bg);
+  color: var(--tracker-text);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--tracker-shadow);
+  transition: all 0.3s ease;
+}
+
+.assignment-card h3 {
+  margin-bottom: 12px;
+  color: var(--tracker-header);
+}
+
+.assignment-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.assignment-inputs input[type="text"],
+.assignment-inputs input[type="date"] {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+
+.assignment-inputs button {
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.assignment-inputs button:hover {
+  background-color: #45a049;
+}
+
+.assignment-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.assignment-list li {
+  padding: 6px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+}
+
+.assignment-list li span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* 🎨 Deadline Colors */
+.urgent {
+  color: red;
+}
+.due-today {
+  color: orange;
+}
+.due-this-week {
+  color: goldenrod;
+}
+.future {
+  color: green;
+}
+
+/* 🌞 Light Mode */
+:root {
+  --tracker-bg: #ffffff;
+  --tracker-text: #1a1a1a;
+  --tracker-header: #333333;
+  --tracker-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌑 Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tracker-bg: #000000;
+    --tracker-text: #e0e0ff;
+    --tracker-header: #f3e8ff;
+    --tracker-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+  }
+}
